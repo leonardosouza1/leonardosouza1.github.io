@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de formas de pagamento</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <form action="GET" id="form">
+        <label for="mastercard">Mastercard
+            <input type="checkbox" name="mastercard" id="mastercard">
+        </label>
+        <label for="visa">Visa
+            <input type="checkbox" name="visa" id="visa">
+        </label>
+        <label for="dinersclub">Diners Club
+
+            <input type="checkbox" name="dinersclub" id="dinersclub">
+        </label>
+        <label for="elo">Elo
+
+            <input type="checkbox" name="elo" id="elo">
+        </label>
+        <label for="hipercard">Hipercard
+
+            <input type="checkbox" name="hipercard" id="hipercard">
+        </label>
+        <label for="pagseguro">Pagseguro
+
+            <input type="checkbox" name="pagseguro" id="pagseguro">
+        </label>
+        <label for="boleto">Boleto Bancário
+
+            <input type="checkbox" name="boleto" id="boleto">
+        </label>
+        <label for="amex">American Express
+
+            <input type="checkbox" name="amex" id="amex">
+        </label>
+        <label for="pix">Pix
+
+            <input type="checkbox" name="pix" id="pix">
+        </label>
+        <button type="button" onClick="generateImage()">Gerar</button>
+    </form>
+
+    <canvas id="canvas"></canvas>
+    <button onclick="download()" id="download">Download</button>
+
+    <script>
+        function download() {
+            console.log('download')
+            var link = document.createElement('a');
+            link.download = 'Formasdepagamento.png';
+            link.href = document.getElementById('canvas').toDataURL()
+            link.click();
+        }
+
+        function generateImage() {
+            var oldcanv = document.getElementById('canvas');
+            document.body.removeChild(oldcanv)
+
+            var canv = document.createElement('canvas');
+            canv.id = 'canvas';
+            canv.setAttribute('loaded', 1)
+            document.body.appendChild(canv);
+
+            var context = canvas.getContext('2d');
+            const imgWidth = 80
+            const imgHeight = 50
+            canvas.width = canvas.width
+            var xPoisiton = 0
+            var yPoisiton = 0
+            var checkboxes = document.querySelectorAll('input:checked');
+            var size = checkboxes.length
+
+            canvas.width = Math.ceil(size / 2) * (imgWidth + 5)
+            canvas.height = 2 * imgHeight + 10
+            checkboxes.forEach(box => {
+                var img = document.createElement('img')
+                img.src = './assets/' + box.getAttribute('name') + '.png'
+                img.onload = () => {
+                    context.drawImage(img, xPoisiton, yPoisiton, imgWidth, imgHeight);
+                    xPoisiton += (imgWidth + 5)
+                    if (xPoisiton > (size / 2) * imgWidth) {
+                        xPoisiton = 0
+                        yPoisiton += (imgHeight + 5)
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
